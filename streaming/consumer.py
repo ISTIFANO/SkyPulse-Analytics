@@ -5,9 +5,6 @@ from postgres_writer import insert_tweets
 FAKE_API_URL = "http://localhost:9000/batch"
 
 def consume_microbatch(batch_size=10):
-    """
-    Récupère un micro-batch de tweets depuis l'API, prédit le sentiment et les stocke.
-    """
     response = requests.get(FAKE_API_URL, params={"batch_size": batch_size})
     tweets = response.json()
 

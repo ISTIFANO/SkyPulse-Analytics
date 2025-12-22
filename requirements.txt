@@ -1,5 +1,6 @@
 # Web Frameworks
 streamlit>=1.28.0
+streamlit-autorefresh>=1.0.1
 fastapi>=0.104.0
 uvicorn>=0.24.0
 

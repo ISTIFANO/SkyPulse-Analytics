@@ -1,6 +1,10 @@
 import psycopg2
+import os
 
-DATABASE_URL = "postgresql://aerostream_user:aerostream_pass@postgres:5432/aerostream"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://aerostream_user:aerostream_pass@localhost:5433/aerostream"
+)
 
 def create_tables():
 
