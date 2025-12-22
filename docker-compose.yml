@@ -32,15 +32,23 @@ services:
       AIRFLOW__CORE__DAGS_FOLDER: /opt/airflow/dags
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
       AIRFLOW__WEBSERVER__SECRET_KEY: skypulse_secret_key_123
+      # PostgreSQL connection for the DAG
+      AIRFLOW_CONN_AEROSTREAM_DB: postgresql://aerostream_user:aerostream_pass@postgres:5432/aerostream
+      # API URL for tweets
+      FAKE_API_URL: http://fastapi:9000/batch
+      # Install additional packages
+      _PIP_ADDITIONAL_REQUIREMENTS: apache-airflow-providers-postgres requests
     volumes:
       - ./dags:/opt/airflow/dags
       - ./streaming:/opt/airflow/streaming
+      - ./models:/opt/airflow/models
       - airflow_data:/opt/airflow
     ports:
       - "8085:8080"
-    command: bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com || true && airflow webserver"
+    command: bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com || true && (airflow scheduler &) && airflow webserver"
     depends_on:
       - postgres
+      - fastapi
 
   app:
     build: .
